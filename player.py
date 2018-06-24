@@ -54,6 +54,7 @@ class Player(ABC):
         coord = self.choose_square(piece, board)
         board.put(piece, coord)
 
+
 class HumanPlayer(Player):
 
     def _coord_str_is_valid(self, coord_str):
@@ -106,7 +107,8 @@ class HumanPlayer(Player):
         if not self._coord_str_is_valid(coord_str):
             print('Your choice was malformed! Please enter a single letter '
                   'between a and d and a single integer between 1 and 4. '
-                  "For example, 'a4' or 'c2'")
+                  "For example, 'a4' or 'c2'\n")
+            time.sleep(1)
             return self.choose_square(piece, board)
 
         x, y = coord_str[0], int(coord_str[1])
@@ -120,7 +122,8 @@ class HumanPlayer(Player):
 
         if not self._piece_id_str_is_valid(piece_id_str):
             print('Your choice in invalid! Please enter a single integer '
-                  'between 1 and 16.')
+                  'between 1 and 16.\n')
+            time.sleep(1)
             return self.pick(board)
 
         piece_id = int(piece_id_str)
