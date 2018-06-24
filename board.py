@@ -60,20 +60,20 @@ class Board():
                 count += 1
         return count
 
-    def list_available_pieces(self):
-        for idx, piece in self.pieces.items():
-            if piece.available:
-                print(f'{idx}:{piece}')
+    def get_available_pieces(self):
+        """Returns dict of idx: piece pairs."""
+        return {idx: piece for idx, piece in self.piece.items()
+                if piece.available}
 
-    def list_available_squares(self):
+    def get_available_squares(self):
+        """Returns list of Coordinates instances."""
         available_coordinates = []
         for x in range(4):
             for y in range(4):
                 if self.square is None:
                     coord = Coordinates(x, y, raw_values=True)
                     available_coordinates.append(coord)
-        for coord in available_coordinates:
-            print(coord)
+        return available_coordinates
 
     def put(self, piece, coord):
         """Place piece at given coordinates.
