@@ -65,6 +65,16 @@ class Board():
             if piece.available:
                 print(f'{idx}:{piece}')
 
+    def list_available_squares(self):
+        available_coordinates = []
+        for x in range(4):
+            for y in range(4):
+                if self.square is None:
+                    coord = Coordinates(x, y, raw_values=True)
+                    available_coordinates.append(coord)
+        for coord in available_coordinates:
+            print(coord)
+
     def put(self, piece, coord):
         """Place piece at given coordinates.
 
