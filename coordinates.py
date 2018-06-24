@@ -13,7 +13,7 @@ class Coordinates():
     the user of the Board class need to worry about it.
     """
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, raw_values=False):
         """
 
         Arguments
@@ -22,10 +22,15 @@ class Coordinates():
             single letter in [a, b, c, d]
         y: int
             ranges from 1 to 4
+        raw_values: bool
+            If set to True, assign x and y directly without preprocessing.
         """
         self.char_int_map = {'a': 0, 'b': 1, 'c': 2, 'd': 3}
         self.int_char_map = {y: x for x, y in self.char_int_map.items()}
-        self.x, self.y = self.from_alphanumeric(x, y)
+        if raw_values:
+            self.x, self.y = x, y
+        else:
+            self.x, self.y = self.from_alphanumeric(x, y)
 
     def __repr__(self):
         x, y = self.to_alphanumeric()
