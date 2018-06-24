@@ -55,6 +55,16 @@ class Player(ABC):
         board.put(piece, coord)
 
 
+class ComputerPlayer(Player):
+
+    def choose_square(self, piece, board):
+        return board.get_available_squares()[0]
+
+    def pick(self, board):
+        available_pieces = board.get_available_pieces()
+        first_piece = list(available_pieces.values)[0]
+        return first_piece
+
 class HumanPlayer(Player):
 
     def _coord_str_is_valid(self, coord_str):
