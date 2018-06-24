@@ -10,6 +10,12 @@ from coordinates import Coordinates
 
 class Player(ABC):
 
+    def __init__(self, name):
+        self.name = name
+
+    def __eq__(self, other):
+        return self.name == other.name
+
     @abstractmethod
     def choose_square(self, piece, board):
         """Choose where to place a piece.
