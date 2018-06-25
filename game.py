@@ -13,7 +13,7 @@ class Game():
         self.board = Board()
         pass
 
-    def _validate_human_comp(self, human_comp_str):
+    def _human_comp_str_is_valid(self, human_comp_str):
         """Determine whether human_comp_str is well-formed."""
         return human_comp_str in ('h', 'c')
 
@@ -22,17 +22,17 @@ class Game():
             f'Is player {player_name} a human or a computer? [h/c]: '
         ).lower().strip()
 
-        if not _human_comp_str_is_valid(player_human_comp):
+        if not self._human_comp_str_is_valid(player_human_comp):
             print("Please choose either 'h' for human or 'c' for computer")
             return self.choose_player(player_name)
 
-        if player_a_human_comp == 'h':
+        if player_human_comp == 'h':
             return HumanPlayer(player_name)
         else:
             return ComputerPlayer(player_name)
 
     def play(self):
-        while not board.winning():
+        while not self.board.winning():
             picked_piece = self.current_player.pick(self.board)
             self._switch_current_player()
             self.current_player.place(picked_piece, self.board)
