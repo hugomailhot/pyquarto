@@ -62,7 +62,7 @@ class Board():
 
     def get_available_pieces(self):
         """Returns dict of idx: piece pairs."""
-        return {idx: piece for idx, piece in self.piece.items()
+        return {idx: piece for idx, piece in self.pieces.items()
                 if piece.available}
 
     def get_available_squares(self):
