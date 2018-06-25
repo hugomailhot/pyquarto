@@ -91,11 +91,11 @@ class HumanPlayer(Player):
         if len(coord_str) != 2:
             return False
         col, row = coord_str[0], coord_str[1]
-        if not all(col.isalpha(), row.isnumeric()):
+        if not all((col.isalpha(), row.isnumeric())):
             return False
         if not col in ('a', 'b', 'c', 'd'):
             return False
-        if not 1 <= row <= 4:
+        if not 1 <= int(row) <= 4:
             return False
         return True
 
@@ -133,7 +133,9 @@ class HumanPlayer(Player):
 
     def pick(self, board):
         print('-- Available pieces --')
-        print(board.list_available_pieces())
+        avail_pieces = board.get_available_pieces()
+        for piece_id, piece in avail_pieces.items():
+            print(f'{piece_id}:{piece}')
         piece_id_str = input('Choose a piece (e.g. 4): ').strip()
 
         if not self._piece_id_str_is_valid(piece_id_str):
