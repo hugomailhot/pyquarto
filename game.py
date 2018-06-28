@@ -36,6 +36,7 @@ class Game():
             picked_piece = self.current_player.pick(self.board)
             self._switch_current_player()
             self.current_player.place(picked_piece, self.board)
+            print(self.board)
         self.end_game()
 
     def _switch_current_player(self):

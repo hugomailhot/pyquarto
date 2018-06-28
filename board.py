@@ -5,6 +5,7 @@ from terminaltables import SingleTable
 
 from exceptions import PieceNotAvailable, SquareNotAvailable
 from piece import Piece
+from coordinates import Coordinates
 
 
 class Board():
@@ -70,7 +71,7 @@ class Board():
         available_coordinates = []
         for x in range(4):
             for y in range(4):
-                if self.square is None:
+                if self.squares[x][y] is None:
                     coord = Coordinates(x, y, raw_values=True)
                     available_coordinates.append(coord)
         return available_coordinates
