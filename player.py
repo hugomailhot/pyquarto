@@ -72,6 +72,48 @@ class ComputerPlayer(Player):
         first_piece = list(available_pieces.values())[0]
         return first_piece
 
+    def minimax(self, game, depth):
+        """Compute best move, assuming opponent plays optimally.
+
+        Arguments
+        ---------
+        game: pyquarto.Game
+            Current game state
+
+        Returns
+        -------
+        int:
+            Score of current game state
+        """
+        if game.board.winning() or depth == 0:
+            return self.score(game)
+
+
+
+    def score(self, game):
+        """Compute game state quality evaluation score.
+
+        If the game is not in an end state, return the number of lines
+        with 3 pieces on them.
+
+        Arguments
+        ---------
+        game: pyquarto.Game
+            Current game state.
+
+        Returns
+        -------
+        int
+        """
+        if game.board.winning():
+            if game.current_player == game.ai_player:
+                return 100
+            else:
+                return -100
+        else:
+            return 0
+
+
 
 class HumanPlayer(Player):
 
