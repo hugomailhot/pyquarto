@@ -85,6 +85,8 @@ class ComputerPlayer(Player):
         ---------
         game: pyquarto.Game
             Current game state
+        depth: int
+            Depth levels left to recursively go down
 
         Returns
         -------
