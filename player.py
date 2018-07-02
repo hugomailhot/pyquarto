@@ -53,7 +53,6 @@ class ComputerPlayer(Player):
 
         return piece
 
-
     def choose_square(self, piece, board):
         print(board.get_available_squares())
         return board.get_available_squares()[0]
