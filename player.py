@@ -3,6 +3,7 @@
 
 
 from abc import ABC, abstractmethod
+fro copy import deepcopy
 from itertools import product
 import time
 
@@ -33,11 +34,25 @@ class Player(ABC):
 
 class ComputerPlayer(Player):
 
-    def play(self, game):
-        coords = self.choose_square(game.picked_piece, game.board)
-        game.board.put(game.picked_piece, coords)
+    def __init__(self, name, max_depth):
+        self.max_depth = depth
+        super().__init__(name)
 
-        return self.pick(self, game.board)
+    def play(self, game):
+        turns = {}
+        for coord, piece in self.list_possible_turns(game):
+            new_game = deepcopy(game)
+            new_game.board.put(new_game.picked_piece, coord)
+            new_game.picked_piece = piece
+
+            turns[(coord, piece)] = self.minimax(new_game, self.max_depth)
+
+        # Choose square to play and piece to pick with best minimax score
+        square, piece = max(turns.items(), key=operator.itemgetter(1))
+        game.board.put(game.picked_piece, square)
+
+        return piece
+
 
     def choose_square(self, piece, board):
         print(board.get_available_squares())
