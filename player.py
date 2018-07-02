@@ -3,6 +3,7 @@
 
 
 from abc import ABC, abstractmethod
+from itertools import product
 import time
 
 from coordinates import Coordinates
@@ -41,6 +42,22 @@ class ComputerPlayer(Player):
     def choose_square(self, piece, board):
         print(board.get_available_squares())
         return board.get_available_squares()[0]
+
+    def list_possible_turns(self, game):
+        """Return list of possible turnsgiven game state.
+
+        Arguments
+        ---------
+        game: Game
+
+        Returns
+        -------
+        List of (Coordinates, Piece) tuples, for where to play and what piece
+        to choose for the opponent.
+        """
+        return list(
+            product(game.get_available_squares, game.get_available_pieces)
+        )
 
     def pick(self, board):
         available_pieces = board.get_available_pieces()
