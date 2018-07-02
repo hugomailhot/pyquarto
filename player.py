@@ -134,7 +134,6 @@ class HumanPlayer(Player):
 
         return self.pick(game.board)
 
-
     def choose_square(self, piece, board):
         print(board)
         print(f'Choose where to place your piece. Your piece is: {piece}')
