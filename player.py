@@ -39,16 +39,10 @@ class ComputerPlayer(Player):
         super().__init__(name)
 
     def play(self, game):
-        turns = {}
-        for coord, piece in self.list_possible_turns(game):
-            new_game = deepcopy(game)
-            new_game.board.put(new_game.picked_piece, coord)
-            new_game.picked_piece = piece
-
-            turns[(coord, piece)] = self.minimax(new_game, self.max_depth)
+        turns_scores = self.get_possible_turns_and_scores(game)
 
         # Choose square to play and piece to pick with best minimax score
-        square, piece = max(turns.items(), key=operator.itemgetter(1))
+        square, piece = max(turns_scores.items(), key=operator.itemgetter(1))
         game.board.put(game.picked_piece, square)
 
         return piece
@@ -57,28 +51,29 @@ class ComputerPlayer(Player):
         print(board.get_available_squares())
         return board.get_available_squares()[0]
 
-    def list_possible_turns(self, game):
-        """Return list of possible turnsgiven game state.
-
-        Arguments
-        ---------
-        game: Game
-
-        Returns
-        -------
-        List of (Coordinates, Piece) tuples, for where to play and what piece
-        to choose for the opponent.
-        """
-        return list(
+    def get_possible_turns_and_scores(self, game):
+        turns_scores = {}
+        possible_turns = list(
             product(game.get_available_squares, game.get_available_pieces)
         )
+
+        for coord, piece in possible_turns(game):
+            new_game = deepcopy(game)
+            new_game.board.put(new_game.picked_piece, coord)
+            new_game.picked_piece = piece
+
+            turns[(coord, piece)] = self.minimax(
+                new_game, self.max_depth, True
+            )
+
+        return turns_scores
 
     def pick(self, board):
         available_pieces = board.get_available_pieces()
         first_piece = list(available_pieces.values())[0]
         return first_piece
 
-    def minimax(self, game, depth):
+    def minimax(self, game, depth, maximizing):
         """Compute best move, assuming opponent plays optimally.
 
         Arguments
@@ -95,6 +90,10 @@ class ComputerPlayer(Player):
         """
         if game.board.winning() or depth == 0:
             return self.score(game)
+
+        if maximizing:
+            best_score = -100
+
 
     def score(self, game):
         """Compute game state quality evaluation score.
