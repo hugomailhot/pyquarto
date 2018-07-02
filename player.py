@@ -17,51 +17,26 @@ class Player(ABC):
         return self.name == other.name
 
     @abstractmethod
-    def choose_square(self, piece, board):
-        """Choose where to place a piece.
-
-        Arguments
-        ---------
-        piece: Piece
-        board: Board
-
-        Returns
-        -------
-        Coordinates
-        """
-        pass
-
-    @abstractmethod
-    def pick(self, board):
-        """Pick a piece from the available ones on the board.
-
-        Arguments
-        ---------
-        board: Board
-
-        Returns
-        -------
-        Int, used as piece identifier in the board.
-        """
-        pass
-
-    def place(self, piece, board):
+    def play(self, game):
         """Choose where to place a piece and put it on the board.
 
         Arguments
         ---------
-        piece: Piece
-        board: Board
+        game: Game
 
         Returns
         -------
-        Coordinates.
+        Piece picked for next player.
         """
-        coord = self.choose_square(piece, board)
-        board.put(piece, coord)
 
 
 class ComputerPlayer(Player):
+
+    def play(self, game):
+        coords = self.choose_square(game.picked_piece, game.board)
+        game.board.put(game.picked_piece, coords)
+
+        return self.pick(self, game.board)
 
     def choose_square(self, piece, board):
         print(board.get_available_squares())
@@ -88,8 +63,6 @@ class ComputerPlayer(Player):
         if game.board.winning() or depth == 0:
             return self.score(game)
 
-
-
     def score(self, game):
         """Compute game state quality evaluation score.
 
@@ -112,7 +85,6 @@ class ComputerPlayer(Player):
                 return -100
         else:
             return 0
-
 
 
 class HumanPlayer(Player):
@@ -155,6 +127,13 @@ class HumanPlayer(Player):
         if not 1 <= piece_id <= 16:
             return False
         return True
+
+    def play(self, game):
+        coords = self.choose_square(piece, board)
+        game.board.put(game.picked_piece, coords)
+
+        return self.pick(game.board)
+
 
     def choose_square(self, piece, board):
         print(board)
