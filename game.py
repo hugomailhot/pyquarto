@@ -29,7 +29,8 @@ class Game():
         if player_human_comp == 'h':
             return HumanPlayer(player_name)
         else:
-            return ComputerPlayer(player_name)
+            self.ai_player = ComputerPlayer(player_name, 2)
+            return self.ai_player
 
     def play(self):
         while not self.board.winning():
