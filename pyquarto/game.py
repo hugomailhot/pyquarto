@@ -1,8 +1,8 @@
 # !/usr/bin/env python
 # encoding: utf-8
 
-from board import Board
-from player import HumanPlayer, ComputerPlayer
+from .board import Board
+from .player import HumanPlayer, ComputerPlayer
 
 
 class Game():
@@ -29,13 +29,14 @@ class Game():
         if player_human_comp == 'h':
             return HumanPlayer(player_name)
         else:
-            return ComputerPlayer(player_name)
+            self.ai_player = ComputerPlayer(player_name, 2)
+            return self.ai_player
 
     def play(self):
         while not self.board.winning():
-            picked_piece = self.current_player.pick(self.board)
             self._switch_current_player()
-            self.current_player.place(picked_piece, self.board)
+            print(f"Player {self.current_player.name}'s turn")
+            self.picked_piece = self.current_player.play(self)
         self.end_game()
 
     def _switch_current_player(self):
@@ -49,6 +50,9 @@ class Game():
         self.player_a = self.choose_player('A')
         self.player_b = self.choose_player('B')
         self.current_player = self.player_a
+        self.picked_piece = self.current_player.pick(self.board)
+        print(self.picked_piece)
+        self._switch_current_player()
         self.play()
 
     def end_game(self):

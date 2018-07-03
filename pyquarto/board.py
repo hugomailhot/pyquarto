@@ -3,9 +3,9 @@
 
 from terminaltables import SingleTable
 
-from exceptions import PieceNotAvailable, SquareNotAvailable
-from piece import Piece
-from coordinates import Coordinates
+from .exceptions import PieceNotAvailable, SquareNotAvailable
+from .piece import Piece
+from .coordinates import Coordinates
 
 
 class Board():
