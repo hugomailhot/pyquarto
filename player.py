@@ -44,6 +44,19 @@ class ComputerPlayer(Player):
         super().__init__(name)
 
     def play(self, game):
+        pieces_played = sum(1 for x in game.board.pieces.values()
+                            if not x.available)
+        if pieces_played < 4:
+            # No chance of losing yet, choose randomly to skip the most
+            # computationally intensive first turns
+            square = random.choice(game.board.get_available_squares())
+            available_pieces = list(game.board.get_available_pieces().values())
+            available_pieces.remove(game.picked_piece)
+            piece = random.choice(available_pieces)
+            game.board.put(game.picked_piece, square)
+
+            return piece
+
         turns_scores = self.get_possible_turns_and_scores(
             game, self.max_depth, True
         )
