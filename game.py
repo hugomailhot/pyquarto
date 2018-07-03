@@ -34,8 +34,9 @@ class Game():
 
     def play(self):
         while not self.board.winning():
-            self.picked_piece = self.current_player.play(self)
             self._switch_current_player()
+            print(f"Player {self.current_player.name}'s turn")
+            self.picked_piece = self.current_player.play(self)
         self.end_game()
 
     def _switch_current_player(self):
@@ -50,6 +51,8 @@ class Game():
         self.player_b = self.choose_player('B')
         self.current_player = self.player_a
         self.picked_piece = self.current_player.pick(self.board)
+        print(self.picked_piece)
+        self._switch_current_player()
         self.play()
 
     def end_game(self):
