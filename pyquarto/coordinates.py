@@ -37,7 +37,8 @@ class Coordinates():
         x, y = self.to_alphanumeric()
         return f'({x}, {y})'
 
-    def from_alphanumeric(self, x, y):
+    @staticmethod
+    def from_alphanumeric(x, y):
         x = Coordinates.char_int_map[x]
         y -= 1
         return (x, y)
