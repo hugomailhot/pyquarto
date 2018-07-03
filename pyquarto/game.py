@@ -1,8 +1,8 @@
 # !/usr/bin/env python
 # encoding: utf-8
 
-from board import Board
-from player import HumanPlayer, ComputerPlayer
+from .board import Board
+from .player import HumanPlayer, ComputerPlayer
 
 
 class Game():

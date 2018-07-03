@@ -9,7 +9,7 @@ import operator
 import random
 import time
 
-from coordinates import Coordinates
+from .coordinates import Coordinates
 
 
 class Player(ABC):
