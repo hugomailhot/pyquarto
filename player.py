@@ -3,8 +3,10 @@
 
 
 from abc import ABC, abstractmethod
-fro copy import deepcopy
+from copy import deepcopy
 from itertools import product
+import operator
+import random
 import time
 
 from coordinates import Coordinates
@@ -17,6 +19,9 @@ class Player(ABC):
 
     def __eq__(self, other):
         return self.name == other.name
+
+    def __str__(self):
+        return f'Player {self.name}'
 
     @abstractmethod
     def play(self, game):
@@ -35,14 +40,17 @@ class Player(ABC):
 class ComputerPlayer(Player):
 
     def __init__(self, name, max_depth):
-        self.max_depth = depth
+        self.max_depth = max_depth
         super().__init__(name)
 
     def play(self, game):
-        turns_scores = self.get_possible_turns_and_scores(game)
+        turns_scores = self.get_possible_turns_and_scores(
+            game, self.max_depth, True
+        )
 
         # Choose square to play and piece to pick with best minimax score
-        square, piece = max(turns_scores.items(), key=operator.itemgetter(1))
+        square, piece = max(turns_scores.items(), key=operator.itemgetter(1))[0]
+        print(max(turns_scores.values()))
         game.board.put(game.picked_piece, square)
 
         return piece
@@ -51,19 +59,24 @@ class ComputerPlayer(Player):
         print(board.get_available_squares())
         return board.get_available_squares()[0]
 
-    def get_possible_turns_and_scores(self, game):
+    def get_possible_turns_and_scores(self, game, depth, maximizing):
         turns_scores = {}
+        available_pieces = list(game.board.get_available_pieces().values())
+        available_pieces.remove(game.picked_piece)
+
         possible_turns = list(
-            product(game.get_available_squares, game.get_available_pieces)
+            product(game.board.get_available_squares(),
+                    available_pieces)
         )
 
-        for coord, piece in possible_turns(game):
+        for coord, piece in possible_turns:
             new_game = deepcopy(game)
             new_game.board.put(new_game.picked_piece, coord)
             new_game.picked_piece = piece
+            new_game._switch_current_player()
 
-            turns[(coord, piece)] = self.minimax(
-                new_game, self.max_depth, True
+            turns_scores[(coord, piece)] = self.minimax(
+                new_game, depth, maximizing
             )
 
         return turns_scores
@@ -92,8 +105,18 @@ class ComputerPlayer(Player):
             return self.score(game)
 
         if maximizing:
-            best_score = -100
+            print('maximizing', game.current_player)
+            turns_scores = self.get_possible_turns_and_scores(
+                game, depth-1, False
+            )
+            return max(turns_scores.values())
 
+        else:
+            print('minimizing', game.current_player)
+            turns_scores = self.get_possible_turns_and_scores(
+                game, depth-1, True
+            )
+            return min(turns_scores.values())
 
     def score(self, game):
         """Compute game state quality evaluation score.
@@ -161,7 +184,7 @@ class HumanPlayer(Player):
         return True
 
     def play(self, game):
-        coords = self.choose_square(piece, board)
+        coords = self.choose_square(game.picked_piece, game.board)
         game.board.put(game.picked_piece, coords)
 
         return self.pick(game.board)
@@ -186,6 +209,7 @@ class HumanPlayer(Player):
         return Coordinates(x, y)
 
     def pick(self, board):
+        print(board)
         print('-- Available pieces --')
         avail_pieces = board.get_available_pieces()
         for piece_id, piece in avail_pieces.items():
