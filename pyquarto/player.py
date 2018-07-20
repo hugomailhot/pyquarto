@@ -186,8 +186,7 @@ class HumanPlayer(Player):
     def _piece_id_str_is_valid(self, piece_id_str):
         """Determine if piece_id_str is well-formed.
 
-        To be well-formed is to have a single numeric character in the
-        range 1-16.
+        To be well-formed is to be a number betweeb 1-16.
         """
         if not piece_id_str.isnumeric():
             return False
