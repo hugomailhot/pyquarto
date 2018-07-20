@@ -78,8 +78,7 @@ class ComputerPlayer(Player):
         available_pieces.remove(game.picked_piece)
 
         possible_turns = list(
-            product(game.board.get_available_squares(),
-                    available_pieces)
+            product(game.board.get_available_squares(), available_pieces)
         )
 
         for coord, piece in possible_turns:
@@ -95,6 +94,16 @@ class ComputerPlayer(Player):
         return turns_scores
 
     def pick(self, board):
+        """Choose a piece from the available ones on the board.
+
+        Arguments
+        ---------
+        board: Board
+
+        Returns
+        -------
+        Piece
+        """
         available_pieces = board.get_available_pieces()
         first_piece = list(available_pieces.values())[0]
         return first_piece
