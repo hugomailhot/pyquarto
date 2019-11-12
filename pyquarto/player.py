@@ -46,7 +46,7 @@ class ComputerPlayer(Player):
     def play(self, game):
         pieces_played = sum(1 for x in game.board.pieces.values()
                             if not x.available)
-        if pieces_played < 4:
+        if pieces_played < 3:
             # No chance of losing yet, choose randomly to skip the most
             # computationally intensive first turns
             square = random.choice(game.board.get_available_squares())
@@ -63,13 +63,11 @@ class ComputerPlayer(Player):
 
         # Choose square to play and piece to pick with best minimax score
         square, piece = max(turns_scores.items(), key=operator.itemgetter(1))[0]
-        print(max(turns_scores.values()))
         game.board.put(game.picked_piece, square)
 
         return piece
 
     def choose_square(self, piece, board):
-        print(board.get_available_squares())
         return board.get_available_squares()[0]
 
     def get_possible_turns_and_scores(self, game, depth, maximizing):
@@ -127,14 +125,12 @@ class ComputerPlayer(Player):
             return self.score(game)
 
         if maximizing:
-            print('maximizing', game.current_player)
             turns_scores = self.get_possible_turns_and_scores(
                 game, depth-1, False
             )
             return max(turns_scores.values())
 
         else:
-            print('minimizing', game.current_player)
             turns_scores = self.get_possible_turns_and_scores(
                 game, depth-1, True
             )
